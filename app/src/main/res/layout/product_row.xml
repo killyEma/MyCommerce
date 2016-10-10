@@ -1,0 +1,100 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="?android:attr/listPreferredItemHeight"
+    android:padding="0dip" >
+
+    <LinearLayout
+        android:id="@+id/leftSide"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_weight="1"
+        android:layout_gravity="center_vertical">
+
+        <ImageView
+            android:id="@+id/product_iv"
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:src="@drawable/computer_mouse"
+            android:layout_margin="5dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        android:layout_weight="4">
+        <TextView
+            android:id="@+id/description_product_tv"
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginLeft="5dp"
+            android:gravity="center_vertical"
+            android:text="Description mane"
+            android:layout_weight="2"
+            style="@style/TitleProductStyle" />
+
+            <LinearLayout
+                android:id="@+id/innerLayout2"
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="2">
+
+                <LinearLayout
+                    android:id="@+id/innerLayout3"
+                    android:orientation="horizontal"
+                    android:layout_width="fill_parent"
+                    android:layout_height="0dp"
+                    android:gravity="bottom"
+                    android:layout_weight="1">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginLeft="5dp"
+                        android:gravity="bottom"
+                        android:text="@string/price"/>
+                    <TextView
+                        android:id="@+id/price_tv"
+                        android:gravity="bottom"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/activity_horizontal_margin"
+                        android:text=""/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/innerLayout4"
+                    android:orientation="horizontal"
+                    android:layout_width="fill_parent"
+                    android:layout_height="0dp"
+                    android:gravity="bottom"
+                    android:layout_weight="1">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginLeft="5dp"
+                        android:gravity="bottom"
+                        android:text="@string/stock"/>
+                    <TextView
+                        android:id="@+id/stock_tv"
+                        android:gravity="bottom"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/activity_horizontal_margin"
+                        android:text=""/>
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

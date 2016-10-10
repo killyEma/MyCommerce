@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">MyCommerce</string>
+    <string name="new_product">NUEVO CURSO</string>
+    <string name="price">Price:</string>
+    <string name="stock">Stock:</string>
+
+    <style name="TitleProductStyle">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/colorTextTitle</item>
+    </style>
 </resources>
