@@ -61,18 +61,18 @@ public class ProductAdapter extends BaseAdapter{
     }
 
     private class ProductHolder {
-        TextView description, price, stock;
+        TextView name, price, stock;
         ImageView photo;
 
-        public ProductHolder(TextView description, TextView price, TextView stock, ImageView photo) {
-            this.description = description;
+        public ProductHolder(TextView name, TextView price, TextView stock, ImageView photo) {
+            this.name = name;
             this.price = price;
             this.stock = stock;
             this.photo = photo;
         }
 
         public void setProduct(Product product) {
-            this.description.setText(product.getDescription());
+            this.name.setText(product.getName());
             this.price.setText(product.getPrice());
             this.stock.setText(String.valueOf(product.getStock()));
         }

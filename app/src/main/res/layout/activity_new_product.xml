@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    tools:context=".activities.NewProductActivity"
+    >
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="24dp"
+        android:paddingLeft="24dp"
+        android:paddingRight="24dp"
+        android:background="@color/colorDialog">
+
+        <android.support.v7.widget.DialogTitle
+            android:text="@string/title_dialog_new_product"
+            android:textSize="20sp"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:textStyle="bold"/>
+
+        <!--  Name  -->
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp">
+            <EditText android:id="@+id/name_new_product_et"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:inputType="textCapWords"
+                android:hint="@string/new_product_name"/>
+        </android.support.design.widget.TextInputLayout>
+
+        <!--code-->
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp">
+            <EditText android:id="@+id/code_new_product_et"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:inputType="textCapWords"
+                android:hint="@string/new_product_code"/>
+        </android.support.design.widget.TextInputLayout>
+
+        <!--  description  -->
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp">
+            <EditText android:id="@+id/description_new_product_et"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:inputType="textCapWords"
+                android:hint="@string/new_product_description"/>
+        </android.support.design.widget.TextInputLayout>
+
+        <!--  stock  -->
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp">
+            <EditText android:id="@+id/stock_new_product_et"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:inputType="textCapWords"
+                android:hint="@string/new_product_stock"/>
+        </android.support.design.widget.TextInputLayout>
+
+        <!--  price  -->
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp">
+            <EditText android:id="@+id/price_new_product_et"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:inputType="textCapWords"
+                android:hint="@string/new_product_price"/>
+        </android.support.design.widget.TextInputLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical"
+            android:layout_gravity="center"
+            >
+            <ImageView
+                android:id="@+id/image_new_product_iv"
+                android:labelFor="@string/btn_cancel"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="5dp"
+                android:src="@drawable/computer_mouse"
+                android:clickable="true"
+                android:layout_gravity="center"/>
+        </LinearLayout>
+
+        <!-- Buttons -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:orientation="horizontal"
+            android:gravity="end">
+
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/new_product_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="24dp"
+                android:padding="8dp"
+                android:text="@string/btn_create"
+                android:textColor="@color/color_btn_dialog"
+                android:background="@android:color/transparent"
+                android:clickable="true"
+                android:focusable="false"
+                android:textStyle="bold"/>
+
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/cancel_new_product_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="24dp"
+                android:padding="8dp"
+                android:text="@string/btn_cancel"
+                android:textColor="@color/color_btn_dialog"
+                android:background="@android:color/transparent"
+                android:clickable="true"
+                android:textStyle="bold"/>
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>
+

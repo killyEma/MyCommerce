@@ -3,6 +3,14 @@
     <string name="new_product">NUEVO CURSO</string>
     <string name="price">Price:</string>
     <string name="stock">Stock:</string>
+    <string name="title_dialog_new_product">NUEVO PRODUCTO</string>
+    <string name="btn_cancel">CANCELAR</string>
+    <string name="btn_create">GUARDAR</string>
+    <string name="new_product_name">Nombre</string>
+    <string name="new_product_description">Descripción</string>
+    <string name="new_product_code">Código</string>
+    <string name="new_product_stock">Stock</string>
+    <string name="new_product_price">Precio</string>
 
     <style name="TitleProductStyle">
         <item name="android:textSize">16sp</item>

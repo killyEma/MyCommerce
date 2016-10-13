@@ -18,9 +18,7 @@ import java.util.List;
 
 public class ProductFragment extends ListFragment {
 
-
-    public ProductFragment() {
-    }
+    public ProductFragment() {}
 
     public static ProductFragment newInstance() {
         ProductFragment fragment = new ProductFragment();
@@ -46,7 +44,7 @@ public class ProductFragment extends ListFragment {
     private List<Product> retrieveProducts() {
         List<Product> products = new ArrayList<>();
         for (int i = 0; i < 5 ; i++) {
-            Product product = new Product(String.valueOf(i), "description", (4 + i), "8.56", "pictureId");
+            Product product = new Product(String.valueOf(i),"name", "description", (4 + i), "8.56", new byte[]{});
             products.add(product);
         }
         return products;

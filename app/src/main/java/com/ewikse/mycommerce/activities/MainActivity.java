@@ -1,11 +1,12 @@
 package com.ewikse.mycommerce.activities;
 
-import android.support.design.widget.TabLayout;
+import android.content.Intent;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import android.view.MenuItem;
 
 import com.ewikse.mycommerce.R;
 import com.ewikse.mycommerce.adapters.MainActivityPagerAdapter;
@@ -13,6 +14,8 @@ import com.ewikse.mycommerce.adapters.MainActivityPagerAdapter;
 public class MainActivity extends AppCompatActivity {
     private final static String TITLES [] = new String[]{"Productos"};
     private ViewPager viewPager;
+    private static NewProductActivity newProductActivity;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +34,17 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_new_product:
+                Intent intent = new Intent();
+                intent.setClassName(this, "com.ewikse.mycommerce.activities.NewProductActivity");
+                startActivity(intent);
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 }

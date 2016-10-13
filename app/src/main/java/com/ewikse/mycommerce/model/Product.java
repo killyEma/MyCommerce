@@ -2,13 +2,15 @@ package com.ewikse.mycommerce.model;
 
 public class Product {
     private String code;
+    private String name;
     private String description;
     private int stock;
     private String price;
-    private String picture;
+    private byte[] picture;
 
-    public Product(String code, String description, int stock, String price, String picture) {
+    public Product(String code, String name, String description, int stock, String price, byte[] picture) {
         this.code = code;
+        this.name = name;
         this.description = description;
         this.stock = stock;
         this.price = price;
@@ -47,11 +49,19 @@ public class Product {
         this.price = price;
     }
 
-    public String getPicture() {
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public byte[] getPicture() {
         return picture;
     }
 
-    public void setPicture(String picture) {
+    public void setPicture(byte[] picture) {
         this.picture = picture;
     }
 }
