@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.ewikse.mycommerce.R;
 import com.ewikse.mycommerce.model.Product;
+import com.ewikse.mycommerce.utils.PhotoUtils;
 
 import java.util.List;
 
@@ -75,6 +76,7 @@ public class ProductAdapter extends BaseAdapter{
             this.name.setText(product.getName());
             this.price.setText(product.getPrice());
             this.stock.setText(String.valueOf(product.getStock()));
+            this.photo.setImageBitmap(PhotoUtils.getPhoto(product.getPicture()));
         }
     }
 

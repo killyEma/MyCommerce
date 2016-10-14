@@ -8,6 +8,7 @@ import android.util.Log;
 
 import com.ewikse.mycommerce.model.Product;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ProductDAOImpl extends DbContentProvider implements ProductDAO, IProductSchema{
@@ -38,6 +39,19 @@ public class ProductDAOImpl extends DbContentProvider implements ProductDAO, IPr
         }
     }
 
+    @Override
+    public List<Product> fetchAllProducts() {
+        List<Product> products = new ArrayList<>();
+        Cursor cursor = super.query(TABLE_PRODUCTS, PRODUCT_COLUMNS_FOR_LIST, null, null, null, null);
+        cursor.moveToNext();
+        while (!cursor.isAfterLast()) {
+            products.add(cursorToEntity(cursor));
+            cursor.moveToNext();
+        }
+        cursor.close();
+        return products;
+    }
+
     private void setContentValues(Product product) {
         contentValues  = new ContentValues();
         contentValues.put(CL_PRODUCTS_CODE, product.getCode());
@@ -47,11 +61,6 @@ public class ProductDAOImpl extends DbContentProvider implements ProductDAO, IPr
         contentValues.put(CL_PRODUCTS_PRICE, product.getPrice());
         contentValues.put(CL_PRODUCTS_STOCK, product.getStock());
 
-    }
-
-    @Override
-    public List<Product> fetchAllProducts() {
-        return null;
     }
 
     @Override

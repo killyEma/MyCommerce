@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">MyCommerce</string>
-    <string name="new_product">NUEVO CURSO</string>
+    <!--items-->
+    <string name="new_product">NUEVO PRODUCTO</string>
+
+    <!--new product flow-->
     <string name="price">Price:</string>
     <string name="stock">Stock:</string>
     <string name="title_dialog_new_product">NUEVO PRODUCTO</string>

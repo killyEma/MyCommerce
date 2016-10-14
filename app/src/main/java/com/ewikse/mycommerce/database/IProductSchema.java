@@ -20,4 +20,7 @@ public interface IProductSchema {
             CL_PRODUCTS_IMAGE + " BLOB" +
             ")";
 
+    String[] PRODUCT_COLUMNS_FOR_LIST = new String[] {CL_PRODUCTS_CODE, CL_PRODUCTS_NAME,
+            CL_PRODUCTS_DESCRIPTION, CL_PRODUCTS_STOCK, CL_PRODUCTS_PRICE, CL_PRODUCTS_IMAGE};
+
 }

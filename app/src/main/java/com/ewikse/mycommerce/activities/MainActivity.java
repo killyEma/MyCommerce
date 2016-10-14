@@ -14,8 +14,6 @@ import com.ewikse.mycommerce.adapters.MainActivityPagerAdapter;
 public class MainActivity extends AppCompatActivity {
     private final static String TITLES [] = new String[]{"Productos"};
     private ViewPager viewPager;
-    private static NewProductActivity newProductActivity;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -5,6 +5,8 @@ import android.content.Context;
 import com.ewikse.mycommerce.database.DataBase;
 import com.ewikse.mycommerce.model.Product;
 
+import java.util.List;
+
 public class ProductServiceImpl {
     private static ProductServiceImpl service;
     private static Context context;
@@ -17,5 +19,9 @@ public class ProductServiceImpl {
     public boolean saveProduct(Product product) {
         //TODO: this call should be in a AsyncTask
         return DataBase.productDAO.addProduct(product);
+    }
+
+    public List<Product> getProducts() {
+        return DataBase.productDAO.fetchAllProducts();
     }
 }

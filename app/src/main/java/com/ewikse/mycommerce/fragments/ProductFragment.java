@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.ewikse.mycommerce.R;
 import com.ewikse.mycommerce.adapters.ProductAdapter;
 import com.ewikse.mycommerce.model.Product;
+import com.ewikse.mycommerce.services.ProductServiceImpl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,18 +37,22 @@ public class ProductFragment extends ListFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_product_list, container, false);
-        List<Product> products = retrieveProducts();
-        setListAdapter(new ProductAdapter(getActivity(), products));
         return view;
+
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (getUserVisibleHint()) {
+            List<Product> products = retrieveProducts();
+            setListAdapter(new ProductAdapter(getActivity(), products));
+        }
+
     }
 
     private List<Product> retrieveProducts() {
-        List<Product> products = new ArrayList<>();
-        for (int i = 0; i < 5 ; i++) {
-            Product product = new Product(String.valueOf(i),"name", "description", (4 + i), "8.56", new byte[]{});
-            products.add(product);
-        }
-        return products;
+        return ProductServiceImpl.getInstance(getContext()).getProducts();
     }
 
     @Override
