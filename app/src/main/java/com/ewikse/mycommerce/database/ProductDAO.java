@@ -10,4 +10,6 @@ public interface ProductDAO {
     List<Product> fetchAllProducts();
     boolean deleteProduct(String code);
     boolean updateProduct(Product product);
+
+    Product getProductByCode(String code);
 }

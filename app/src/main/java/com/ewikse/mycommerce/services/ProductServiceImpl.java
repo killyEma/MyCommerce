@@ -24,4 +24,8 @@ public class ProductServiceImpl {
     public List<Product> getProducts() {
         return DataBase.productDAO.fetchAllProducts();
     }
+
+    public Product getProductByCode(String code) {
+        return DataBase.productDAO.getProductByCode(code);
+    }
 }

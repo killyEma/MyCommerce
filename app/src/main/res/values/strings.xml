@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MyCommerce</string>
+    <string name="app_name">My Commerce</string>
     <!--items-->
     <string name="new_product">NUEVO PRODUCTO</string>
 
@@ -14,6 +14,11 @@
     <string name="new_product_code">Código</string>
     <string name="new_product_stock">Stock</string>
     <string name="new_product_price">Precio</string>
+
+    <string name="detail_product_description_string">Descripción</string>
+    <string name="detail_product_stock_string">Stock</string>
+    <string name="detail_product_price_string">Precio</string>
+    <string name="detail_product_code_string">Código</string>
 
     <style name="TitleProductStyle">
         <item name="android:textSize">16sp</item>

@@ -77,7 +77,7 @@ public class NewProductActivity extends AppCompatActivity implements View.OnClic
                 description.getText().toString(),
                 Integer.parseInt(stock.getText().toString()),
                 price.getText().toString(),
-                PhotoUtils.getBytes(imageBitmap));
+                imageBitmap);
     }
 
     private void retrieveImageFromGallery() {

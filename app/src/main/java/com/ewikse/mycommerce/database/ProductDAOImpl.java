@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.ewikse.mycommerce.model.Product;
+import com.ewikse.mycommerce.utils.PhotoUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +22,7 @@ public class ProductDAOImpl extends DbContentProvider implements ProductDAO, IPr
                                         cursor.getString(2),
                                         cursor.getInt(3),
                                         cursor.getString(4),
-                                        cursor.getBlob(5));
+                                        PhotoUtils.getPhoto(cursor.getBlob(5)));
     }
 
     public ProductDAOImpl(SQLiteDatabase mDb) {
@@ -37,6 +38,13 @@ public class ProductDAOImpl extends DbContentProvider implements ProductDAO, IPr
             Log.w("DATABASE", e.getMessage());
             return false;
         }
+    }
+
+    @Override
+    public Product getProductByCode(String code) {
+        Cursor cursor = super.rawQuery(SINGLE_PRODUCT_QUERY, new String[] {code + ""});
+        cursor.moveToNext();
+        return cursorToEntity(cursor);
     }
 
     @Override
@@ -56,7 +64,7 @@ public class ProductDAOImpl extends DbContentProvider implements ProductDAO, IPr
         contentValues  = new ContentValues();
         contentValues.put(CL_PRODUCTS_CODE, product.getCode());
         contentValues.put(CL_PRODUCTS_DESCRIPTION, product.getDescription());
-        contentValues.put(CL_PRODUCTS_IMAGE, product.getPicture());
+        contentValues.put(CL_PRODUCTS_IMAGE, PhotoUtils.getBytes(product.getPicture()));
         contentValues.put(CL_PRODUCTS_NAME, product.getName());
         contentValues.put(CL_PRODUCTS_PRICE, product.getPrice());
         contentValues.put(CL_PRODUCTS_STOCK, product.getStock());

@@ -12,14 +12,12 @@ import com.ewikse.mycommerce.R;
 import com.ewikse.mycommerce.adapters.MainActivityPagerAdapter;
 
 public class MainActivity extends AppCompatActivity {
-    private final static String TITLES [] = new String[]{"Productos"};
     private ViewPager viewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.appbar);
         setSupportActionBar(toolbar);

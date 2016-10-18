@@ -1,14 +1,18 @@
 package com.ewikse.mycommerce.model;
 
-public class Product {
+import android.graphics.Bitmap;
+
+import java.io.Serializable;
+
+public class Product implements Serializable{
     private String code;
     private String name;
     private String description;
     private int stock;
     private String price;
-    private byte[] picture;
+    private Bitmap picture;
 
-    public Product(String code, String name, String description, int stock, String price, byte[] picture) {
+    public Product(String code, String name, String description, int stock, String price, Bitmap picture) {
         this.code = code;
         this.name = name;
         this.description = description;
@@ -57,11 +61,11 @@ public class Product {
         this.name = name;
     }
 
-    public byte[] getPicture() {
+    public Bitmap getPicture() {
         return picture;
     }
 
-    public void setPicture(byte[] picture) {
+    public void setPicture(Bitmap picture) {
         this.picture = picture;
     }
 }
