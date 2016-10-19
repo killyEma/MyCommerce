@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    tools:context=".activities.DetailProductActivity"
+    >
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="24dp"
+        android:paddingLeft="24dp"
+        android:paddingRight="24dp"
+        android:background="@color/colorDialog">
+
+
+        <android.support.v7.widget.DialogTitle
+            android:text="@string/dialog_title_delete"
+            android:textSize="20sp"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:textStyle="bold"/>
+
+
+        <!-- Buttons -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:orientation="horizontal"
+            android:gravity="end">
+
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/dialog_product_cancel_delete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="24dp"
+                android:padding="8dp"
+                android:text="@string/btn_cancel"
+                android:textColor="@color/color_btn_dialog"
+                android:background="@android:color/transparent"
+                android:clickable="false"
+                android:focusable="false"
+                android:textStyle="bold"/>
+
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/dialog_product_discard_product"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="24dp"
+                android:padding="8dp"
+                android:text="@string/btn_discard"
+                android:textColor="@color/color_btn_dialog"
+                android:background="@android:color/transparent"
+                android:textStyle="bold"
+                />
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+</ScrollView>
+

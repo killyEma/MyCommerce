@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +25,9 @@ public class ProductFragment extends Fragment {
     private static List<Product> products;
     private static Intent intent;
     private static ProductFragment fragment;
+    private ContentAdapter adapter;
+    private RecyclerView recyclerView;
+    public static boolean LIST_CHANGED = false;
 
     public ProductFragment() {}
 
@@ -43,8 +47,8 @@ public class ProductFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        RecyclerView recyclerView = (RecyclerView) inflater.inflate(R.layout.recycler_view, container, false);
-        ContentAdapter adapter = new ContentAdapter();
+        recyclerView = (RecyclerView) inflater.inflate(R.layout.recycler_view, container, false);
+        adapter = new ContentAdapter();
         recyclerView.setAdapter(adapter);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -92,6 +96,7 @@ public class ProductFragment extends Fragment {
                     }
                     intent.putExtra(DetailProductActivity.CODE_KEY, products.get(getAdapterPosition()).getCode());
                     v.getContext().startActivity(intent);
+
                 }
             });
         }

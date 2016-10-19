@@ -2,6 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.ewikse.mycommerce">
 
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+
     <application
         android:name=".initial.InitApplicationCommerce"
         android:allowBackup="true"
@@ -9,6 +13,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <activity
             android:name=".activities.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
@@ -18,9 +23,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.NewProductActivity">
+        <activity android:name=".activities.NewProductActivity"/>
 
-        </activity>
         <activity android:name=".activities.DetailProductActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar"
             android:parentActivityName=".activities.MainActivity">
@@ -28,6 +32,17 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.MainActivity" />
         </activity>
+
+        <receiver
+            android:name=".backgroundservices.AlarmReceiverEmail"
+            android:process=":remote" >
+        </receiver>
+
+        <service android:name=".backgroundservices.EmailService"
+            android:exported="false"/>
+        <service android:name=".backgroundservices.AlarmEmailService"
+            android:exported="false"/>
+
     </application>
 
 </manifest>

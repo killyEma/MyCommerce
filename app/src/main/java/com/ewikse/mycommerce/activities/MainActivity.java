@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.action_new_product:
                 Intent intent = new Intent();
-                intent.setClassName(this, "com.ewikse.mycommerce.activities.NewProductActivity");
+                intent.setClass(this, NewProductActivity.class);
                 startActivity(intent);
         }
         return super.onOptionsItemSelected(item);

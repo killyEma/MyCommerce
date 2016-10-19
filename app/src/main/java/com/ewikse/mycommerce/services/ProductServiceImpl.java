@@ -1,6 +1,7 @@
 package com.ewikse.mycommerce.services;
 
 import android.content.Context;
+import android.provider.ContactsContract;
 
 import com.ewikse.mycommerce.database.DataBase;
 import com.ewikse.mycommerce.model.Product;
@@ -27,5 +28,10 @@ public class ProductServiceImpl {
 
     public Product getProductByCode(String code) {
         return DataBase.productDAO.getProductByCode(code);
+    }
+
+    public boolean deleteProduct(String code) {
+        DataBase.productDAO.deleteProduct(code);
+        return true;
     }
 }

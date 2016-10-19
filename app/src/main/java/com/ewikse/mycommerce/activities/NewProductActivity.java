@@ -16,6 +16,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.ewikse.mycommerce.R;
+import com.ewikse.mycommerce.backgroundservices.EmailService;
 import com.ewikse.mycommerce.model.Product;
 import com.ewikse.mycommerce.services.ProductServiceImpl;
 import com.ewikse.mycommerce.utils.PhotoUtils;
@@ -29,6 +30,7 @@ public class NewProductActivity extends AppCompatActivity implements View.OnClic
     private ImageView image;
     private static int RESULT_LOAD_IMAGE = 1;
     private static Bitmap imageBitmap;
+    private Intent intent;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -66,7 +68,9 @@ public class NewProductActivity extends AppCompatActivity implements View.OnClic
 
     public void saveProduct() {
         if (image.getId() != 0) {
-            ProductServiceImpl.getInstance(getApplicationContext()).saveProduct(retrieveProduct());
+            Product product = retrieveProduct();
+            ProductServiceImpl.getInstance(getApplicationContext()).saveProduct(product);
+            callServiceEmail(product.getCode());
         }
         finish();
     }
@@ -81,9 +85,11 @@ public class NewProductActivity extends AppCompatActivity implements View.OnClic
     }
 
     private void retrieveImageFromGallery() {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
+        if (intent == null) {
+            intent = new Intent();
+            intent.setType("image/*");
+            intent.setAction(Intent.ACTION_GET_CONTENT);
+        }
         startActivityForResult(Intent.createChooser(intent,"Imagen de nuevo Producto"), RESULT_LOAD_IMAGE, null);
     }
 
@@ -121,6 +127,12 @@ public class NewProductActivity extends AppCompatActivity implements View.OnClic
         Bitmap image = BitmapFactory.decodeFileDescriptor(fileDescriptor);
         parcelFileDescriptor.close();
         return image;
+    }
+
+    private void callServiceEmail(String code) {
+        Intent i = new Intent(this, EmailService.class);
+        i.putExtra(EmailService.CODE_PRODUCT, code);
+        startService(i);
     }
 
 }

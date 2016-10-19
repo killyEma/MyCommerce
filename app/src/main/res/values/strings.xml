@@ -19,6 +19,10 @@
     <string name="detail_product_stock_string">Stock</string>
     <string name="detail_product_price_string">Precio</string>
     <string name="detail_product_code_string">Código</string>
+    <string name="detail_edit_product">EDITAR</string>
+    <string name="detail_remove_product">Eliminar</string>
+    <string name="dialog_title_delete">¿Desea descartar este Producto?</string>
+    <string name="btn_discard">DESCARTAR</string>
 
     <style name="TitleProductStyle">
         <item name="android:textSize">16sp</item>

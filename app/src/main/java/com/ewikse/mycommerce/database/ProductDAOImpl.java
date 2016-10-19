@@ -14,6 +14,7 @@ import java.util.List;
 
 public class ProductDAOImpl extends DbContentProvider implements ProductDAO, IProductSchema{
     private ContentValues contentValues;
+    private PhotoUtils photoUtils;
 
     @Override
     protected Product cursorToEntity(Cursor cursor) {
@@ -22,11 +23,12 @@ public class ProductDAOImpl extends DbContentProvider implements ProductDAO, IPr
                                         cursor.getString(2),
                                         cursor.getInt(3),
                                         cursor.getString(4),
-                                        PhotoUtils.getPhoto(cursor.getBlob(5)));
+                                        photoUtils.getPhoto(cursor.getBlob(5)));
     }
 
     public ProductDAOImpl(SQLiteDatabase mDb) {
         super(mDb);
+        photoUtils = new PhotoUtils();
     }
 
     @Override
@@ -72,8 +74,8 @@ public class ProductDAOImpl extends DbContentProvider implements ProductDAO, IPr
     }
 
     @Override
-    public boolean deleteProduct(String code) {
-        return false;
+    public void deleteProduct(String code) {
+        super.delete(TABLE_PRODUCTS, CL_PRODUCTS_CODE + "=?" , new String[]{code});
     }
 
     @Override
