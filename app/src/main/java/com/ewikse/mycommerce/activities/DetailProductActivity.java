@@ -58,7 +58,7 @@ public class DetailProductActivity extends AppCompatActivity {
             case R.id.action_remove_product:
                 deleteProductDialog = new DeleteProductDialog(this, product.getCode());
                 deleteProductDialog.show();
-                ProductFragment.LIST_CHANGED = true;
+                ProductFragment.PRODUCT_DELETED = product;
                 return true;
             case R.id.action_edit_product:
 //                TODO:edit product

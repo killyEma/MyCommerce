@@ -21,6 +21,11 @@ public class Product implements Serializable{
         this.picture = picture;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        return this.getCode().equals(((Product) obj).code);
+    }
+
     public String getCode() {
         return code;
     }

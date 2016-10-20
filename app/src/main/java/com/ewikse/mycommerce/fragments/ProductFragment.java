@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +26,7 @@ public class ProductFragment extends Fragment {
     private static ProductFragment fragment;
     private ContentAdapter adapter;
     private RecyclerView recyclerView;
-    public static boolean LIST_CHANGED = false;
+    public static Product PRODUCT_DELETED = null;
 
     public ProductFragment() {}
 
@@ -55,6 +54,35 @@ public class ProductFragment extends Fragment {
         return recyclerView;
     }
 
+    private List<Product> retrieveProducts() {
+        //TODO: this should be in asynctask
+        return ProductServiceImpl.getInstance(getContext()).getProducts();
+    }
+
+    public void removeRow(int position) {
+
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (null != PRODUCT_DELETED) {
+            adapter.notifyItemRemoved(products.indexOf(PRODUCT_DELETED));
+            products.remove(PRODUCT_DELETED);
+        }
+        PRODUCT_DELETED = null;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+    }
+
     public static class ContentAdapter extends RecyclerView.Adapter<ProductHolder> {
 
         @Override
@@ -75,6 +103,7 @@ public class ProductFragment extends Fragment {
         public int getItemCount() {
             return products.size();
         }
+
     }
 
     public static class ProductHolder extends RecyclerView.ViewHolder {
@@ -102,19 +131,4 @@ public class ProductFragment extends Fragment {
         }
     }
 
-
-    private List<Product> retrieveProducts() {
-        //TODO: this should be in asynctask
-        return ProductServiceImpl.getInstance(getContext()).getProducts();
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-    }
 }
