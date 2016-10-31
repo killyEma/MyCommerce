@@ -29,10 +29,9 @@ public class DeleteProductDialog extends Dialog implements View.OnClickListener{
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.dialog_product_discard_product:
                 deleteProduct();
-
                 dismiss();
                 break;
             case R.id.dialog_product_cancel_delete:

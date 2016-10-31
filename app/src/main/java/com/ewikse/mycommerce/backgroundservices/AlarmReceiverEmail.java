@@ -12,8 +12,8 @@ public class AlarmReceiverEmail extends BroadcastReceiver{
     @Override
     public void onReceive(Context context, Intent intent) {
         Log.w("BRO_RE", "para el servicio");
-        Intent i = new Intent(context, AlarmEmailService.class);
-        context.startService(i);
+//        Intent i = new Intent(context, AlarmEmailService.class);
+//        context.startService(i);
     }
 
 }

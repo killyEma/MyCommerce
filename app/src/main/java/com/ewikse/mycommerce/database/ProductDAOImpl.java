@@ -23,7 +23,7 @@ public class ProductDAOImpl extends DbContentProvider implements ProductDAO, IPr
                                         cursor.getString(2),
                                         cursor.getInt(3),
                                         cursor.getString(4),
-                                        photoUtils.getPhoto(cursor.getBlob(5)));
+                                        cursor.getString(5));
     }
 
     public ProductDAOImpl(SQLiteDatabase mDb) {
@@ -44,9 +44,16 @@ public class ProductDAOImpl extends DbContentProvider implements ProductDAO, IPr
 
     @Override
     public Product getProductByCode(String code) {
-        Cursor cursor = super.rawQuery(SINGLE_PRODUCT_QUERY, new String[] {code + ""});
+        Cursor cursor = super.rawQuery(SINGLE_PRODUCT_QUERY, new String[] {code});
         cursor.moveToNext();
         return cursorToEntity(cursor);
+    }
+
+    @Override
+    public String getPictureProductByCode(String code) {
+        Cursor cursor = super.rawQuery(SINGLE_PICTURE_NAME_PRODUCT_QUERY, new String[] {code});
+        cursor.moveToNext();
+        return cursor.getString(0);
     }
 
     @Override
@@ -66,7 +73,7 @@ public class ProductDAOImpl extends DbContentProvider implements ProductDAO, IPr
         contentValues  = new ContentValues();
         contentValues.put(CL_PRODUCTS_CODE, product.getCode());
         contentValues.put(CL_PRODUCTS_DESCRIPTION, product.getDescription());
-        contentValues.put(CL_PRODUCTS_IMAGE, PhotoUtils.getBytes(product.getPicture()));
+        contentValues.put(CL_PRODUCTS_IMAGE, product.getPicture());
         contentValues.put(CL_PRODUCTS_NAME, product.getName());
         contentValues.put(CL_PRODUCTS_PRICE, product.getPrice());
         contentValues.put(CL_PRODUCTS_STOCK, product.getStock());

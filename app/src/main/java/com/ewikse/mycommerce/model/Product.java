@@ -1,7 +1,5 @@
 package com.ewikse.mycommerce.model;
 
-import android.graphics.Bitmap;
-
 import java.io.Serializable;
 
 public class Product implements Serializable{
@@ -10,15 +8,20 @@ public class Product implements Serializable{
     private String description;
     private int stock;
     private String price;
-    private Bitmap picture;
+    private String picture;
 
-    public Product(String code, String name, String description, int stock, String price, Bitmap picture) {
+    public Product(String code, String name, String description, int stock, String price, String picture) {
         this.code = code;
         this.name = name;
         this.description = description;
         this.stock = stock;
         this.price = price;
         this.picture = picture;
+    }
+
+    @Override
+    public int hashCode() {
+        return code.hashCode() * 2 + stock * 2;
     }
 
     @Override
@@ -66,11 +69,11 @@ public class Product implements Serializable{
         this.name = name;
     }
 
-    public Bitmap getPicture() {
+    public String getPicture() {
         return picture;
     }
 
-    public void setPicture(Bitmap picture) {
+    public void setPicture(String picture) {
         this.picture = picture;
     }
 }

@@ -1,5 +1,6 @@
 package com.ewikse.mycommerce.activities;
 
+import android.graphics.Bitmap;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -20,13 +21,11 @@ public class DetailProductActivity extends AppCompatActivity {
     public static final String CODE_KEY = "CODE_KEY";
     public static Product product;
     private DeleteProductDialog deleteProductDialog;
+    private static Bitmap picture;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        String product_code = getIntent().getStringExtra(CODE_KEY);
-        product = findProductByCode(product_code);
 
         setContentView(R.layout.activity_detail_product);
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
@@ -40,30 +39,35 @@ public class DetailProductActivity extends AppCompatActivity {
         TextView code = (TextView) findViewById(R.id.detail_product_code);
         ImageView imageView = (ImageView) findViewById(R.id.detail_product_image);
 
+        product = findProductByCode(getIntent().getStringExtra(CODE_KEY));
+
         collapsingToolbar.setTitle(product.getName());
         description.setText(product.getDescription());
         stock.setText(String.valueOf(product.getStock()));
         price.setText(product.getPrice());
         code.setText(product.getCode());
-        imageView.setImageBitmap(product.getPicture());
+        imageView.setImageBitmap(picture);
     }
 
     private Product findProductByCode(String code) {
-        return ProductServiceImpl.getInstance(getApplicationContext()).getProductByCode(code);
+        ProductServiceImpl productService = ProductServiceImpl.getInstance(getApplicationContext());
+        Product product = productService.getProductByCode(code);
+        picture = productService.retrievePictureProduct(product.getPicture());
+        return product;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
-            case R.id.action_remove_product:
+        switch (item.getItemId()) {
+            case R.id.action_remove_product :
                 deleteProductDialog = new DeleteProductDialog(this, product.getCode());
                 deleteProductDialog.show();
                 ProductFragment.PRODUCT_DELETED = product;
                 return true;
-            case R.id.action_edit_product:
+            case R.id.action_edit_product :
 //                TODO:edit product
                 return true;
-            default:
+            default :
                 return super.onOptionsItemSelected(item);
         }
     }

@@ -12,4 +12,6 @@ public interface ProductDAO {
     boolean updateProduct(Product product);
 
     Product getProductByCode(String code);
+
+    String getPictureProductByCode(String code);
 }

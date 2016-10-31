@@ -10,6 +10,7 @@ import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -31,6 +32,7 @@ public class NewProductActivity extends AppCompatActivity implements View.OnClic
     private static int RESULT_LOAD_IMAGE = 1;
     private static Bitmap imageBitmap;
     private Intent intent;
+    private static final String TITLE_NEW_PRODUCT_CHOOSER = "Imagen de nuevo Producto";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -69,7 +71,7 @@ public class NewProductActivity extends AppCompatActivity implements View.OnClic
     public void saveProduct() {
         if (image.getId() != 0) {
             Product product = retrieveProduct();
-            ProductServiceImpl.getInstance(getApplicationContext()).saveProduct(product);
+            ProductServiceImpl.getInstance(getApplicationContext()).saveProduct(product, imageBitmap);
             callServiceEmail(product.getCode());
         }
         finish();
@@ -81,7 +83,7 @@ public class NewProductActivity extends AppCompatActivity implements View.OnClic
                 description.getText().toString(),
                 Integer.parseInt(stock.getText().toString()),
                 price.getText().toString(),
-                imageBitmap);
+                "");
     }
 
     private void retrieveImageFromGallery() {
@@ -90,7 +92,9 @@ public class NewProductActivity extends AppCompatActivity implements View.OnClic
             intent.setType("image/*");
             intent.setAction(Intent.ACTION_GET_CONTENT);
         }
-        startActivityForResult(Intent.createChooser(intent,"Imagen de nuevo Producto"), RESULT_LOAD_IMAGE, null);
+        startActivityForResult(Intent.createChooser(intent,
+                NewProductActivity.TITLE_NEW_PRODUCT_CHOOSER),
+                RESULT_LOAD_IMAGE, null);
     }
 
     @Override
@@ -106,15 +110,13 @@ public class NewProductActivity extends AppCompatActivity implements View.OnClic
 
         Cursor cursor = getContentResolver().query(selectedImage,
                 filePathColumn, null, null, null);
-        cursor.moveToFirst();
-
-        cursor.close();
+        if (cursor != null) { cursor.close(); }
 
         Bitmap bmp = null;
         try {
             bmp = getBitmapFromUri(selectedImage);
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.w(getApplicationContext().getPackageName(), e.getMessage());
         }
         imageBitmap = bmp;
         image.setImageBitmap(imageBitmap);
@@ -123,9 +125,10 @@ public class NewProductActivity extends AppCompatActivity implements View.OnClic
     private Bitmap getBitmapFromUri(Uri uri) throws IOException {
         ParcelFileDescriptor parcelFileDescriptor =
                 getContentResolver().openFileDescriptor(uri, "r");
-        FileDescriptor fileDescriptor = parcelFileDescriptor.getFileDescriptor();
+        FileDescriptor fileDescriptor = parcelFileDescriptor != null ?
+                parcelFileDescriptor.getFileDescriptor() : null;
         Bitmap image = BitmapFactory.decodeFileDescriptor(fileDescriptor);
-        parcelFileDescriptor.close();
+        if (parcelFileDescriptor != null) { parcelFileDescriptor.close(); }
         return image;
     }
 

@@ -2,6 +2,7 @@ package com.ewikse.mycommerce.fragments;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -27,6 +28,7 @@ public class ProductFragment extends Fragment {
     private ContentAdapter adapter;
     private RecyclerView recyclerView;
     public static Product PRODUCT_DELETED = null;
+    private static List<Bitmap> picturesPath = null;
 
     public ProductFragment() {}
 
@@ -55,8 +57,11 @@ public class ProductFragment extends Fragment {
     }
 
     private List<Product> retrieveProducts() {
+        ProductServiceImpl productService = ProductServiceImpl.getInstance(getContext());
         //TODO: this should be in asynctask
-        return ProductServiceImpl.getInstance(getContext()).getProducts();
+        List<Product> products = productService.getProducts();
+        picturesPath = productService.retrievePicturesForProducts(products);
+        return products;
     }
 
     public void removeRow(int position) {
@@ -93,7 +98,7 @@ public class ProductFragment extends Fragment {
         @Override
         public void onBindViewHolder(ProductHolder holder, int position) {
             Product product = products.get(position);
-            holder.photo.setImageBitmap(product.getPicture());
+            holder.photo.setImageBitmap(picturesPath.get(position));
             holder.name.setText(product.getName());
             holder.price.setText(product.getPrice());
             holder.stock.setText(String.valueOf(product.getStock()));
