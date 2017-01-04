@@ -21,6 +21,8 @@ import java.util.List;
 
 public class ProductServiceImpl {
     private static final String EXTENSION_PICTURE = ".jpg";
+    private static final String ICON = "ICON";
+    private static final String DETAIL = "DETAIL";
     private static ProductServiceImpl service;
     private static Context context;
     private static final String FOLDER_IMAGE_PRODUCTS = "imageProducts";
@@ -29,12 +31,16 @@ public class ProductServiceImpl {
 
     public static ProductServiceImpl getInstance(Context context) {
         ProductServiceImpl.context = context;
-        return service == null ? new ProductServiceImpl() : service;
+        if (service == null ) {
+            service = new ProductServiceImpl();
+        }
+        return service;
     }
 
-    public boolean saveProduct(Product product, Bitmap imageBitmap) {
-        saveToInternalStorage(product.getCode(), imageBitmap);
-        product.setPicture(product.getCode());
+    public boolean saveProduct(Product product, Bitmap icon, Bitmap detail) {
+        saveToInternalStorage(product.getCode(), icon, detail);
+        product.setPictureIcon(product.getCode() + ICON);
+        product.setPictureDetail(product.getCode() + DETAIL);
         //TODO: this call should be in a AsyncTask
         return DataBase.productDAO.addProduct(product);
     }
@@ -68,7 +74,7 @@ public class ProductServiceImpl {
         return new ArrayList<>(Collections2.transform(products, new Function<Product, Bitmap>() {
             @Override
             public Bitmap apply(Product product) {
-                return retrievePictureProduct(product.getPicture());
+                return retrievePictureProduct(product.getPictureIcon());
             }
         }));
     }
@@ -78,21 +84,25 @@ public class ProductServiceImpl {
     }
 
     private boolean deleteStoredPicture(String namePicture) {
-        return new File(loadDirectory(), namePicture + ProductServiceImpl.EXTENSION_PICTURE).delete();
+        return new File(loadDirectory(), namePicture + EXTENSION_PICTURE).delete();
     }
 
-    private void saveToInternalStorage(String code, Bitmap bitmapImage) {
-        File myPath = new File(loadDirectory(), code + ProductServiceImpl.EXTENSION_PICTURE);
+    private void saveToInternalStorage(String code, Bitmap icon, Bitmap detail) {
+        File myPathIcon = new File(loadDirectory(), code + ICON + EXTENSION_PICTURE);
+        File myPathDetail = new File(loadDirectory(), code + DETAIL + EXTENSION_PICTURE);
 
-        FileOutputStream fos = null;
+        FileOutputStream fosIcon = null, fosDetail = null;
         try {
-            fos = new FileOutputStream(myPath);
-            bitmapImage.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+            fosIcon = new FileOutputStream(myPathIcon);
+            icon.compress(Bitmap.CompressFormat.JPEG, 100, fosIcon);
+            fosDetail = new FileOutputStream(myPathDetail);
+            detail.compress(Bitmap.CompressFormat.JPEG, 100, fosDetail);
         } catch (Exception e) {
             Log.w(context.getPackageCodePath(), e.getMessage());
         } finally {
             try {
-                if (fos != null ) { fos.close(); }
+                if (fosIcon != null ) { fosIcon.close(); }
+                if (fosDetail != null ) { fosDetail.close(); }
             } catch (IOException e) {
                 Log.w(context.getPackageCodePath() , e.getMessage());
             }

@@ -12,6 +12,7 @@ import com.ewikse.mycommerce.R;
 import com.ewikse.mycommerce.adapters.MainActivityPagerAdapter;
 
 public class MainActivity extends AppCompatActivity {
+    private static final int RESULT_LIST_CHANGED = 1;
     private ViewPager viewPager;
 
     @Override
@@ -38,9 +39,16 @@ public class MainActivity extends AppCompatActivity {
             case R.id.action_new_product:
                 Intent intent = new Intent();
                 intent.setClass(this, NewProductActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent, RESULT_LIST_CHANGED);
         }
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == RESULT_LIST_CHANGED) {
+            viewPager.setAdapter(new MainActivityPagerAdapter(this.getSupportFragmentManager()));
+        }
+    }
 }

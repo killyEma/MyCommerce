@@ -8,15 +8,17 @@ public class Product implements Serializable{
     private String description;
     private int stock;
     private String price;
-    private String picture;
+    private String pictureIcon;
+    private String pictureDetail;
 
-    public Product(String code, String name, String description, int stock, String price, String picture) {
+    public Product(String code, String name, String description, int stock, String price, String pictureIcon, String pictureDetail) {
         this.code = code;
         this.name = name;
         this.description = description;
         this.stock = stock;
         this.price = price;
-        this.picture = picture;
+        this.pictureIcon = pictureIcon;
+        this.pictureDetail = pictureDetail;
     }
 
     @Override
@@ -69,11 +71,20 @@ public class Product implements Serializable{
         this.name = name;
     }
 
-    public String getPicture() {
-        return picture;
+    public String getPictureIcon() {
+        return pictureIcon;
     }
 
-    public void setPicture(String picture) {
-        this.picture = picture;
+    public void setPictureIcon(String pictureIcon) {
+        this.pictureIcon = pictureIcon;
     }
+
+    public String getPictureDetail() {
+        return pictureDetail;
+    }
+
+    public void setPictureDetail(String pictureDetail) {
+        this.pictureDetail = pictureDetail;
+    }
+
 }

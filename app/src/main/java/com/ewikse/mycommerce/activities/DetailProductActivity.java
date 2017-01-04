@@ -19,9 +19,11 @@ import com.ewikse.mycommerce.services.ProductServiceImpl;
 public class DetailProductActivity extends AppCompatActivity {
 
     public static final String CODE_KEY = "CODE_KEY";
-    public static Product product;
-    private DeleteProductDialog deleteProductDialog;
+
     private static Bitmap picture;
+    private DeleteProductDialog deleteProductDialog;
+
+    public static Product product;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +54,7 @@ public class DetailProductActivity extends AppCompatActivity {
     private Product findProductByCode(String code) {
         ProductServiceImpl productService = ProductServiceImpl.getInstance(getApplicationContext());
         Product product = productService.getProductByCode(code);
-        picture = productService.retrievePictureProduct(product.getPicture());
+        picture = productService.retrievePictureProduct(product.getPictureDetail());
         return product;
     }
 

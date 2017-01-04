@@ -1,16 +1,11 @@
 package com.ewikse.mycommerce.activities;
 
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.ParcelFileDescriptor;
-import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -22,17 +17,26 @@ import com.ewikse.mycommerce.model.Product;
 import com.ewikse.mycommerce.services.ProductServiceImpl;
 import com.ewikse.mycommerce.utils.PhotoUtils;
 
-import java.io.FileDescriptor;
+import static org.apache.commons.lang3.StringUtils.isNotEmpty;
+import static org.apache.commons.lang3.StringUtils.EMPTY;
+
 import java.io.IOException;
 
-public class NewProductActivity extends AppCompatActivity implements View.OnClickListener{
+public class NewProductActivity extends AppCompatActivity implements View.OnClickListener {
+    private static final String TITLE_NEW_PRODUCT_CHOOSER = "Imagen de nuevo Producto";
+    public static final int SAVE_ACTION = 1;
+    public static final int SHOW_ACTION = 2;
+    private static int RESULT_LOAD_IMAGE = 1;
+
     private Button create, cancel;
     private EditText name, code, description, stock, price;
     private ImageView image;
-    private static int RESULT_LOAD_IMAGE = 1;
+
+    private static Uri uri;
     private static Bitmap imageBitmap;
     private Intent intent;
-    private static final String TITLE_NEW_PRODUCT_CHOOSER = "Imagen de nuevo Producto";
+
+    private PhotoUtils photoUtils;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -51,30 +55,46 @@ public class NewProductActivity extends AppCompatActivity implements View.OnClic
         cancel.setOnClickListener(this);
         create.setOnClickListener(this);
         image.setOnClickListener(this);
+        photoUtils = new PhotoUtils(getContentResolver(), getApplicationContext(), getWindowManager());
     }
-
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.cancel_new_product_btn : finish(); break;
-            case R.id.new_product_btn : saveProduct(); break;
-            case R.id.image_new_product_iv : retrieveImage(); break;
+            case R.id.cancel_new_product_btn:
+                finish();
+                break;
+            case R.id.new_product_btn:
+                saveProduct();
+                break;
+            case R.id.image_new_product_iv:
+                retrieveImageFromGallery();
+                break;
         }
-
-    }
-
-    public void retrieveImage() {
-        retrieveImageFromGallery();
     }
 
     public void saveProduct() {
-        if (image.getId() != 0) {
+        if (uri != null && inputsAreValid()) {
             Product product = retrieveProduct();
-            ProductServiceImpl.getInstance(getApplicationContext()).saveProduct(product, imageBitmap);
+            Bitmap icon = null, detail = null;
+            try {
+                icon = imageBitmap == null ? photoUtils.getBitmapFromUri(uri, SHOW_ACTION) : imageBitmap;
+                detail = photoUtils.getBitmapFromUri(uri, SAVE_ACTION);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            ProductServiceImpl.getInstance(getApplicationContext()).saveProduct(product, icon, detail);
             callServiceEmail(product.getCode());
         }
         finish();
+    }
+
+    private boolean inputsAreValid() {
+        return isNotEmpty(code.getText().toString()) &&
+                isNotEmpty(name.getText().toString()) &&
+                isNotEmpty(description.getText().toString()) &&
+                isNotEmpty(stock.getText().toString()) &&
+                isNotEmpty(price.getText().toString());
     }
 
     private Product retrieveProduct() {
@@ -83,7 +103,8 @@ public class NewProductActivity extends AppCompatActivity implements View.OnClic
                 description.getText().toString(),
                 Integer.parseInt(stock.getText().toString()),
                 price.getText().toString(),
-                "");
+                EMPTY,
+                EMPTY);
     }
 
     private void retrieveImageFromGallery() {
@@ -101,35 +122,10 @@ public class NewProductActivity extends AppCompatActivity implements View.OnClic
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data) {
-            reloadImageViewProduct(data.getData());
+            uri = data.getData();
+            imageBitmap = photoUtils.reloadImageViewProduct(uri, SHOW_ACTION);
+            image.setImageBitmap(imageBitmap);
         }
-    }
-
-    private void reloadImageViewProduct(Uri selectedImage) {
-        String[] filePathColumn = { MediaStore.Images.Media.DATA };
-
-        Cursor cursor = getContentResolver().query(selectedImage,
-                filePathColumn, null, null, null);
-        if (cursor != null) { cursor.close(); }
-
-        Bitmap bmp = null;
-        try {
-            bmp = getBitmapFromUri(selectedImage);
-        } catch (IOException e) {
-            Log.w(getApplicationContext().getPackageName(), e.getMessage());
-        }
-        imageBitmap = bmp;
-        image.setImageBitmap(imageBitmap);
-    }
-
-    private Bitmap getBitmapFromUri(Uri uri) throws IOException {
-        ParcelFileDescriptor parcelFileDescriptor =
-                getContentResolver().openFileDescriptor(uri, "r");
-        FileDescriptor fileDescriptor = parcelFileDescriptor != null ?
-                parcelFileDescriptor.getFileDescriptor() : null;
-        Bitmap image = BitmapFactory.decodeFileDescriptor(fileDescriptor);
-        if (parcelFileDescriptor != null) { parcelFileDescriptor.close(); }
-        return image;
     }
 
     private void callServiceEmail(String code) {
@@ -137,5 +133,4 @@ public class NewProductActivity extends AppCompatActivity implements View.OnClic
         i.putExtra(EmailService.CODE_PRODUCT, code);
         startService(i);
     }
-
 }
