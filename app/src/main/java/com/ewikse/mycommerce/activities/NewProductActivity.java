@@ -26,9 +26,11 @@ public class NewProductActivity extends AppCompatActivity implements View.OnClic
     private static final String TITLE_NEW_PRODUCT_CHOOSER = "Imagen de nuevo Producto";
     public static final int SAVE_ACTION = 1;
     public static final int SHOW_ACTION = 2;
+    public static final String TO_ADD = "TO_ADD";
+    public static final String TYPE_IMAGE = "image/*";
+    public static final String TO_ADD_IMAGE = "TO_ADD_IMAGE";
     private static int RESULT_LOAD_IMAGE = 1;
 
-    private Button create, cancel;
     private EditText name, code, description, stock, price;
     private ImageView image;
 
@@ -50,8 +52,8 @@ public class NewProductActivity extends AppCompatActivity implements View.OnClic
         price = (EditText) findViewById(R.id.price_new_product_et);
         image = (ImageView) findViewById(R.id.image_new_product_iv);
         image.setImageResource(R.drawable.document_add);
-        cancel = (Button) findViewById(R.id.cancel_new_product_btn);
-        create = (Button) findViewById(R.id.new_product_btn);
+        Button cancel = (Button) findViewById(R.id.cancel_new_product_btn);
+        Button create = (Button) findViewById(R.id.new_product_btn);
         cancel.setOnClickListener(this);
         create.setOnClickListener(this);
         image.setOnClickListener(this);
@@ -85,6 +87,10 @@ public class NewProductActivity extends AppCompatActivity implements View.OnClic
             }
             ProductServiceImpl.getInstance(getApplicationContext()).saveProduct(product, icon, detail);
             callServiceEmail(product.getCode());
+            Intent intent = new Intent();
+            intent.putExtra(TO_ADD, product);
+            intent.putExtra(TO_ADD_IMAGE, icon);
+            setResult(MainActivity.RESULT_LIST_CHANGED, intent);
         }
         finish();
     }
@@ -110,7 +116,7 @@ public class NewProductActivity extends AppCompatActivity implements View.OnClic
     private void retrieveImageFromGallery() {
         if (intent == null) {
             intent = new Intent();
-            intent.setType("image/*");
+            intent.setType(TYPE_IMAGE);
             intent.setAction(Intent.ACTION_GET_CONTENT);
         }
         startActivityForResult(Intent.createChooser(intent,

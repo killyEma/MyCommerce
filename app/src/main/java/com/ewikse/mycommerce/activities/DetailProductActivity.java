@@ -1,5 +1,6 @@
 package com.ewikse.mycommerce.activities;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -19,11 +20,12 @@ import com.ewikse.mycommerce.services.ProductServiceImpl;
 public class DetailProductActivity extends AppCompatActivity {
 
     public static final String CODE_KEY = "CODE_KEY";
+    public static final String TO_DELETE = "to_delete";
 
     private static Bitmap picture;
     private DeleteProductDialog deleteProductDialog;
-
-    public static Product product;
+    private static Product product;
+    private Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +33,9 @@ public class DetailProductActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_detail_product);
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
         CollapsingToolbarLayout collapsingToolbar = (CollapsingToolbarLayout)
                 findViewById(R.id.detail_collapsing_toolbar);
 
@@ -51,6 +55,35 @@ public class DetailProductActivity extends AppCompatActivity {
         imageView.setImageBitmap(picture);
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_remove_product :
+                toRemoveThisProduct();
+                return true;
+            case R.id.action_edit_product :
+                return true;
+            default :
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void toRemoveThisProduct() {
+        if (deleteProductDialog == null) {
+            deleteProductDialog = new DeleteProductDialog(this);
+        }
+        deleteProductDialog.setCode(product.getCode());
+        deleteProductDialog.show();
+        deleteProductDialog.setDialogResult(new DeleteProductDialog.Answer() {
+            @Override
+            public void finish(int action) {
+                if (action == DeleteProductDialog.OK){
+                    closeDetailProduct(product);
+                }
+            }
+        });
+    }
+
     private Product findProductByCode(String code) {
         ProductServiceImpl productService = ProductServiceImpl.getInstance(getApplicationContext());
         Product product = productService.getProductByCode(code);
@@ -58,20 +91,13 @@ public class DetailProductActivity extends AppCompatActivity {
         return product;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_remove_product :
-                deleteProductDialog = new DeleteProductDialog(this, product.getCode());
-                deleteProductDialog.show();
-                ProductFragment.PRODUCT_DELETED = product;
-                return true;
-            case R.id.action_edit_product :
-//                TODO:edit product
-                return true;
-            default :
-                return super.onOptionsItemSelected(item);
+    private void closeDetailProduct(Product product) {
+        if (intent == null) {
+            intent = new Intent();
         }
+        intent.putExtra(TO_DELETE, product);
+        setResult(ProductFragment.RESULT_LIST_CHANGED, intent);
+        finish();
     }
 
     @Override
