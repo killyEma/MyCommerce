@@ -1,19 +1,17 @@
 package com.ewikse.mycommerce.adapters;
 
-import android.graphics.Bitmap;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.ewikse.mycommerce.fragments.ProductFragment;
-import com.ewikse.mycommerce.model.Product;
 
 public class MainActivityPagerAdapter extends FragmentPagerAdapter{
     private ProductFragment productFragment;
 
-    public MainActivityPagerAdapter(FragmentManager fm) {
+    public MainActivityPagerAdapter(FragmentManager fm, ProductFragment productFragment) {
         super(fm);
-        productFragment = ProductFragment.newInstance();
+        this.productFragment = productFragment;
     }
 
     @Override
@@ -26,7 +24,4 @@ public class MainActivityPagerAdapter extends FragmentPagerAdapter{
         return 1;
     }
 
-    public void notifyItemAdded(Product product, Bitmap icon) {
-        productFragment.notifyItemAdded(product, icon);
-    }
 }

@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 import android.util.Log;
 
 import com.ewikse.mycommerce.database.DataBase;
+import com.ewikse.mycommerce.model.Item;
 import com.ewikse.mycommerce.model.Product;
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
@@ -19,10 +20,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.content.Context.MODE_PRIVATE;
+import static com.ewikse.mycommerce.model.Product.DETAIL;
+import static com.ewikse.mycommerce.model.Product.ICON;
+
 public class ProductServiceImpl {
     private static final String EXTENSION_PICTURE = ".jpg";
-    private static final String ICON = "ICON";
-    private static final String DETAIL = "DETAIL";
     private static ProductServiceImpl service;
     private static Context context;
     private static final String FOLDER_IMAGE_PRODUCTS = "imageProducts";
@@ -37,12 +40,10 @@ public class ProductServiceImpl {
         return service;
     }
 
-    public boolean saveProduct(Product product, Bitmap icon, Bitmap detail) {
-        saveToInternalStorage(product.getCode(), icon, detail);
-        product.setPictureIcon(product.getCode() + ICON);
-        product.setPictureDetail(product.getCode() + DETAIL);
+    public void saveProduct(Item item) {
+        saveToInternalStorage(item.getCode(), item.getIcon(), item.getDetail());
         //TODO: this call should be in a AsyncTask
-        return DataBase.productDAO.addProduct(product);
+        DataBase.productDAO.addProduct(item.getProduct());
     }
 
     public List<Product> getProducts() {
@@ -62,7 +63,7 @@ public class ProductServiceImpl {
     public Bitmap retrievePictureProduct(String picture) {
         Bitmap bitmap = null;
         try {
-            File f = new File(loadDirectory(), picture + ProductServiceImpl.EXTENSION_PICTURE);
+            File f = new File(loadDirectory(), picture + EXTENSION_PICTURE);
             bitmap = BitmapFactory.decodeStream(new FileInputStream(f));
         } catch (FileNotFoundException e) {
             Log.w(context.getPackageCodePath() , e.getMessage());
@@ -104,7 +105,7 @@ public class ProductServiceImpl {
                 if (fosIcon != null ) { fosIcon.close(); }
                 if (fosDetail != null ) { fosDetail.close(); }
             } catch (IOException e) {
-                Log.w(context.getPackageCodePath() , e.getMessage());
+                Log.e(context.getPackageCodePath() , e.getMessage());
             }
         }
     }
@@ -112,7 +113,7 @@ public class ProductServiceImpl {
     private File loadDirectory() {
         if (cw == null && directory == null) {
             cw = new ContextWrapper(ProductServiceImpl.context);
-            directory = cw.getDir(FOLDER_IMAGE_PRODUCTS, Context.MODE_PRIVATE);
+            directory = cw.getDir(FOLDER_IMAGE_PRODUCTS, MODE_PRIVATE);
         }
         return directory;
     }

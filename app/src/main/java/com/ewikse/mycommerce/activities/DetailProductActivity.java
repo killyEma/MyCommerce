@@ -1,7 +1,7 @@
 package com.ewikse.mycommerce.activities;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
+import android.support.annotation.NonNull;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,98 +11,113 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.ewikse.mycommerce.R;
 import com.ewikse.mycommerce.dialogs.DeleteProductDialog;
-import com.ewikse.mycommerce.fragments.ProductFragment;
+import com.ewikse.mycommerce.interfaces.DetailView;
+import com.ewikse.mycommerce.model.DetailProductPresenter;
+import com.ewikse.mycommerce.model.Item;
 import com.ewikse.mycommerce.model.Product;
-import com.ewikse.mycommerce.services.ProductServiceImpl;
 
-public class DetailProductActivity extends AppCompatActivity {
+import static com.ewikse.mycommerce.R.id.detail_collapsing_toolbar;
+import static com.ewikse.mycommerce.R.id.detail_product_code;
+import static com.ewikse.mycommerce.R.id.detail_product_description;
+import static com.ewikse.mycommerce.R.id.detail_product_image;
+import static com.ewikse.mycommerce.R.id.detail_product_price;
+import static com.ewikse.mycommerce.R.id.detail_product_stock;
+import static com.ewikse.mycommerce.R.id.toolbar;
+import static com.ewikse.mycommerce.R.layout.activity_detail_product;
+import static com.ewikse.mycommerce.R.menu.menu_detail_product;
+import static com.ewikse.mycommerce.fragments.ProductFragment.RESULT_LIST_CHANGED;
+
+public class DetailProductActivity extends AppCompatActivity implements DetailView {
 
     public static final String CODE_KEY = "CODE_KEY";
-    public static final String TO_DELETE = "to_delete";
+    public static final String TO_DELETE = "TO_DELETE";
 
-    private static Bitmap picture;
     private DeleteProductDialog deleteProductDialog;
-    private static Product product;
     private Intent intent;
+    private DetailProductPresenter detailProductPresenter;
+    private TextView description, stock, price, code;
+    private ImageView imageView;
+    private CollapsingToolbarLayout collapsingToolbar;
+    private DeleteProductDialog.Answer answer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_detail_product);
-        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
+        setContentView(activity_detail_product);
+        setSupportActionBar((Toolbar) findViewById(toolbar));
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
-        CollapsingToolbarLayout collapsingToolbar = (CollapsingToolbarLayout)
-                findViewById(R.id.detail_collapsing_toolbar);
+        initComponents();
 
-        TextView description = (TextView) findViewById(R.id.detail_product_description);
-        TextView stock = (TextView) findViewById(R.id.detail_product_stock);
-        TextView price = (TextView) findViewById(R.id.detail_product_price);
-        TextView code = (TextView) findViewById(R.id.detail_product_code);
-        ImageView imageView = (ImageView) findViewById(R.id.detail_product_image);
-
-        product = findProductByCode(getIntent().getStringExtra(CODE_KEY));
-
-        collapsingToolbar.setTitle(product.getName());
-        description.setText(product.getDescription());
-        stock.setText(String.valueOf(product.getStock()));
-        price.setText(product.getPrice());
-        code.setText(product.getCode());
-        imageView.setImageBitmap(picture);
+        detailProductPresenter = new DetailProductPresenter();
+        detailProductPresenter.onCreate(this, getIntent().getStringExtra(CODE_KEY));
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_remove_product :
-                toRemoveThisProduct();
-                return true;
-            case R.id.action_edit_product :
-                return true;
-            default :
-                return super.onOptionsItemSelected(item);
-        }
+        return detailProductPresenter.onOptionsItemSelected(item.getItemId());
     }
 
-    private void toRemoveThisProduct() {
+    @Override
+    public void showDialogToRemoveThisProduct() {
         if (deleteProductDialog == null) {
             deleteProductDialog = new DeleteProductDialog(this);
         }
-        deleteProductDialog.setCode(product.getCode());
+        deleteProductDialog.setCode(CODE_KEY);
         deleteProductDialog.show();
-        deleteProductDialog.setDialogResult(new DeleteProductDialog.Answer() {
-            @Override
-            public void finish(int action) {
-                if (action == DeleteProductDialog.OK){
-                    closeDetailProduct(product);
-                }
-            }
-        });
+        deleteProductDialog.setDialogResult(getDialogResult());
     }
 
-    private Product findProductByCode(String code) {
-        ProductServiceImpl productService = ProductServiceImpl.getInstance(getApplicationContext());
-        Product product = productService.getProductByCode(code);
-        picture = productService.retrievePictureProduct(product.getPictureDetail());
-        return product;
-    }
-
-    private void closeDetailProduct(Product product) {
+    @Override
+    public void closeDetailProduct(Product product) {
         if (intent == null) {
             intent = new Intent();
         }
         intent.putExtra(TO_DELETE, product);
-        setResult(ProductFragment.RESULT_LIST_CHANGED, intent);
+        setResult(RESULT_LIST_CHANGED, intent);
         finish();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_detail_product, menu);
+        getMenuInflater().inflate(menu_detail_product, menu);
         return true;
+    }
+
+
+    @Override
+    public void fillPageWithProductData(Item item) {
+        collapsingToolbar.setTitle(item.getName());
+        description.setText(item.getDescription());
+        stock.setText(item.getStock());
+        price.setText(item.getPrice());
+        code.setText(item.getCode());
+        imageView.setImageBitmap(item.getIcon());
+    }
+
+    @NonNull
+    private DeleteProductDialog.Answer getDialogResult() {
+        if (answer == null) {
+            answer = new DeleteProductDialog.Answer() {
+                @Override
+                public void finish(int action) {
+                    detailProductPresenter.onActionSelected(action);
+                }
+            };
+        }
+        return answer;
+    }
+
+    private void initComponents() {
+        collapsingToolbar = (CollapsingToolbarLayout)
+                findViewById(detail_collapsing_toolbar);
+        description = (TextView) findViewById(detail_product_description);
+        stock = (TextView) findViewById(detail_product_stock);
+        price = (TextView) findViewById(detail_product_price);
+        code = (TextView) findViewById(detail_product_code);
+        imageView = (ImageView) findViewById(detail_product_image);
     }
 }

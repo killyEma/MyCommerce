@@ -3,6 +3,9 @@ package com.ewikse.mycommerce.model;
 import java.io.Serializable;
 
 public class Product implements Serializable{
+    public static final String ICON = "ICON";
+    public static final String DETAIL = "DETAIL";
+
     private String code;
     private String name;
     private String description;
@@ -10,6 +13,16 @@ public class Product implements Serializable{
     private String price;
     private String pictureIcon;
     private String pictureDetail;
+
+    public Product(String[] values) {
+        this.code = values[0];
+        this.name = values[1];
+        this.description = values[2];
+        this.stock = Integer.parseInt(values[3]);
+        this.price = values[4];
+        this.pictureIcon = code + ICON;
+        this.pictureDetail = code + DETAIL;
+    }
 
     public Product(String code, String name, String description, int stock, String price, String pictureIcon, String pictureDetail) {
         this.code = code;
@@ -43,24 +56,12 @@ public class Product implements Serializable{
         return description;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public int getStock() {
         return stock;
     }
 
-    public void setStock(int stock) {
-        this.stock = stock;
-    }
-
     public String getPrice() {
         return price;
-    }
-
-    public void setPrice(String price) {
-        this.price = price;
     }
 
     public String getName() {
@@ -75,16 +76,8 @@ public class Product implements Serializable{
         return pictureIcon;
     }
 
-    public void setPictureIcon(String pictureIcon) {
-        this.pictureIcon = pictureIcon;
-    }
-
     public String getPictureDetail() {
         return pictureDetail;
-    }
-
-    public void setPictureDetail(String pictureDetail) {
-        this.pictureDetail = pictureDetail;
     }
 
 }

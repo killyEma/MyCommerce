@@ -15,7 +15,8 @@ public class ContentAdapter extends RecyclerView.Adapter<ProductHolder> {
     private final OnProductClickListener onProductClickListener;
     private List<Product> products;
 
-    public ContentAdapter(List<Product> products, List<Bitmap> picturesIcon, OnProductClickListener onProductClickListener) {
+    public ContentAdapter(List<Product> products, List<Bitmap> picturesIcon,
+                          OnProductClickListener onProductClickListener) {
         this.products = products;
         this.picturesIcon = picturesIcon;
         this.onProductClickListener = onProductClickListener;
@@ -29,7 +30,8 @@ public class ContentAdapter extends RecyclerView.Adapter<ProductHolder> {
     @Override
     public void onBindViewHolder(ProductHolder holder, int position) {
         Product product = products.get(position);
-        holder.bind(picturesIcon.get(position), product.getName(), product.getPrice(), String.valueOf(product.getStock()));
+        holder.bind(picturesIcon.get(position), product.getName(), product.getPrice(),
+                String.valueOf(product.getStock()));
     }
 
     @Override
