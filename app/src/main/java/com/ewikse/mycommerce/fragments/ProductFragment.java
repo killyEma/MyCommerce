@@ -2,7 +2,6 @@ package com.ewikse.mycommerce.fragments;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -15,11 +14,7 @@ import android.view.ViewGroup;
 import com.ewikse.mycommerce.activities.DetailProductActivity;
 import com.ewikse.mycommerce.adapters.ContentAdapter;
 import com.ewikse.mycommerce.interfaces.ProductView;
-import com.ewikse.mycommerce.model.Item;
-import com.ewikse.mycommerce.model.Product;
 import com.ewikse.mycommerce.presenters.ProductPresenter;
-
-import java.util.List;
 
 import static com.ewikse.mycommerce.R.layout.recycler_view;
 import static com.ewikse.mycommerce.activities.DetailProductActivity.CODE_KEY;
@@ -57,8 +52,8 @@ public class ProductFragment extends Fragment implements ProductView {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == 0) { return; }
-        Product product = (Product) data.getExtras().get(TO_DELETE);
-        presenter.onActivityResult(requestCode, resultCode, new Item(product));
+        Object oProduct = data.getExtras().get(TO_DELETE);
+        presenter.onActivityResult(requestCode, resultCode, oProduct);
     }
 
     @Override
@@ -82,8 +77,8 @@ public class ProductFragment extends Fragment implements ProductView {
     }
 
     @Override
-    public void createAdapter(List<Bitmap> picturesIcon, List<Product> products) {
-        adapter = new ContentAdapter(products, picturesIcon, getOnProductClickListener());
+    public void setAdapterWithData(ContentAdapter contentAdapter) {
+        adapter = contentAdapter;
     }
 
     @Override
@@ -94,7 +89,8 @@ public class ProductFragment extends Fragment implements ProductView {
     }
 
     @NonNull
-    private ContentAdapter.OnProductClickListener getOnProductClickListener() {
+    @Override
+    public  ContentAdapter.OnProductClickListener getOnProductClickListener() {
         return new ContentAdapter.OnProductClickListener() {
             @Override
             public void onItemClick(String productCode) {

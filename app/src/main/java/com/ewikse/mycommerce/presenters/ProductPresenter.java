@@ -2,6 +2,7 @@ package com.ewikse.mycommerce.presenters;
 
 import android.graphics.Bitmap;
 
+import com.ewikse.mycommerce.adapters.ContentAdapter;
 import com.ewikse.mycommerce.interfaces.IProductPresenter;
 import com.ewikse.mycommerce.interfaces.ProductView;
 import com.ewikse.mycommerce.model.Item;
@@ -30,12 +31,12 @@ public class ProductPresenter implements IProductPresenter {
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Item item) {
+    public void onActivityResult(int requestCode, int resultCode, Object data) {
         switch (resultCode) {
             case RESULT_LIST_CHANGED:
-                deleteItem(item); break;
+                deleteItem((Product) data); break;
             case RESULT_ITEM_NEW:
-                addNewItem(item); break;
+                addNewItem((Item) data); break;
         }
     }
 
@@ -45,8 +46,8 @@ public class ProductPresenter implements IProductPresenter {
         productView.notifyItemAdded();
     }
 
-    private void deleteItem(Item item) {
-        int position = products.indexOf(item.getProduct());
+    private void deleteItem(Product product) {
+        int position = products.indexOf(product);
         products.remove(position);
         picturesIcon.remove(position);
         productView.notifyDeletedItem(position);
@@ -57,7 +58,7 @@ public class ProductPresenter implements IProductPresenter {
         //TODO: this should be in asyncTask
         products = productService.getProducts();
         picturesIcon = productService.retrievePicturesForProducts(products);
-        productView.createAdapter(picturesIcon, products);
+        productView.setAdapterWithData(new ContentAdapter(products, picturesIcon, productView.getOnProductClickListener()));
         productView.setRecyclerView();
         return products;
     }
