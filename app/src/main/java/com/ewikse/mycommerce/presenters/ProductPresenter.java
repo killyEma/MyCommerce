@@ -11,18 +11,20 @@ import com.ewikse.mycommerce.services.ProductServiceImpl;
 
 import java.util.List;
 
-import static com.ewikse.mycommerce.fragments.ProductFragment.RESULT_LIST_CHANGED ;
-import static com.ewikse.mycommerce.presenters.PresenterMain.RESULT_ITEM_NEW;
+import static com.ewikse.mycommerce.activities.MainActivity.RESULT_ITEM_NEW;
+import static com.ewikse.mycommerce.fragments.ProductFragment.RESULT_ITEM_DELETED;
 
 public class ProductPresenter implements IProductPresenter {
 
     private ProductView productView;
     private List<Product> products;
     private List<Bitmap> picturesIcon;
+    private ProductServiceImpl productService;
 
     @Override
     public void onCreate(ProductView productView) {
         this.productView = productView;
+        productService = ProductServiceImpl.getInstance(productView.getContext());
     }
 
     @Override
@@ -33,28 +35,28 @@ public class ProductPresenter implements IProductPresenter {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Object data) {
         switch (resultCode) {
-            case RESULT_LIST_CHANGED:
-                deleteItem((Product) data); break;
+            case RESULT_ITEM_DELETED:
+                deleteItem((Item) data); break;
             case RESULT_ITEM_NEW:
-                addNewItem((Item) data); break;
+                addNewItem((Product) data); break;
         }
     }
 
-    private void addNewItem(Item item) {
-        products.add(item.getProduct());
-        picturesIcon.add(item.getIcon());
+    private void addNewItem(Product product) {
+        products.add(product);
+        //TODO: this should be in asyncTask
+        picturesIcon.add(productService.retrievePictureProductByName(product.getPictureIcon()));
         productView.notifyItemAdded();
     }
 
-    private void deleteItem(Product product) {
-        int position = products.indexOf(product);
+    private void deleteItem(Item item) {
+        int position = products.indexOf(item.getProduct());
         products.remove(position);
         picturesIcon.remove(position);
         productView.notifyDeletedItem(position);
     }
 
     private List<Product> retrieveProducts() {
-        ProductServiceImpl productService = ProductServiceImpl.getInstance(productView.getContext());
         //TODO: this should be in asyncTask
         products = productService.getProducts();
         picturesIcon = productService.retrievePicturesForProducts(products);

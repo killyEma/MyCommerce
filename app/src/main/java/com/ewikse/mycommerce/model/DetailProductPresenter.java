@@ -18,7 +18,7 @@ public class DetailProductPresenter implements IDetailProductPresenter {
     public void onCreate(DetailView detailView, String code) {
         this.detailView = detailView;
         findProductByCode(code);
-        detailView.fillPageWithProductData(new Item(picture, product));
+        detailView.fillPageWithProductData(new Item(picture, product).toObjectList());
     }
 
     @Override
@@ -38,7 +38,7 @@ public class DetailProductPresenter implements IDetailProductPresenter {
     public void onActionSelected(int action) {
         switch (action) {
             case OK:
-                detailView.closeDetailProduct(product);
+                detailView.closeDetailProduct(new Item(product));
                 break;
             default: detailView.finish();
         }
@@ -47,6 +47,6 @@ public class DetailProductPresenter implements IDetailProductPresenter {
     private void findProductByCode(String code) {
         ProductServiceImpl productService = ProductServiceImpl.getInstance(detailView.getApplicationContext());
         product = productService.getProductByCode(code);
-        picture = productService.retrievePictureProduct(product.getPictureDetail());
+        picture = productService.retrievePictureProductByName(product.getPictureDetail());
     }
 }

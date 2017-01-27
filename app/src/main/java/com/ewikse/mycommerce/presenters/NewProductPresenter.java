@@ -18,6 +18,7 @@ import static com.ewikse.mycommerce.activities.NewProductActivity.RESULT_LOAD_IM
 
 public class NewProductPresenter implements INewProductPresenter {
     private NewProductView newProductView;
+    private Product product;
 
     public NewProductPresenter(NewProductView newProductView) {
         this.newProductView = newProductView;
@@ -32,6 +33,7 @@ public class NewProductPresenter implements INewProductPresenter {
             case new_product_btn:
                 saveProduct();
                 newProductView.callEmailService();
+                newProductView.setResultAction(product);
                 newProductView.finish();
                 break;
             case image_new_product_iv:
@@ -48,7 +50,7 @@ public class NewProductPresenter implements INewProductPresenter {
     }
 
     private void saveProduct() {
-        Product product = new Product(newProductView.retrieveTextInputs());
+        product =  new Product(newProductView.retrieveDataInputs());
         List<Bitmap> images = newProductView.retrieveProductImages();
         Item item = new Item(images.get(0), images.get(1), product);
 

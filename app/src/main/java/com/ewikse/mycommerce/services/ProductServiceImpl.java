@@ -54,13 +54,12 @@ public class ProductServiceImpl {
         return DataBase.productDAO.getProductByCode(code);
     }
 
-    public boolean deleteProduct(String code) {
+    public void deleteProduct(String code) {
         deleteStoredPicture(retrievePictureNameByCode(code));
         DataBase.productDAO.deleteProduct(code);
-        return true;
     }
 
-    public Bitmap retrievePictureProduct(String picture) {
+    public Bitmap retrievePictureProductByName(String picture) {
         Bitmap bitmap = null;
         try {
             File f = new File(loadDirectory(), picture + EXTENSION_PICTURE);
@@ -75,7 +74,7 @@ public class ProductServiceImpl {
         return new ArrayList<>(Collections2.transform(products, new Function<Product, Bitmap>() {
             @Override
             public Bitmap apply(Product product) {
-                return retrievePictureProduct(product.getPictureIcon());
+                return retrievePictureProductByName(product.getPictureIcon());
             }
         }));
     }

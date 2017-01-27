@@ -1,6 +1,7 @@
 package com.ewikse.mycommerce.activities;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -15,7 +16,8 @@ import com.ewikse.mycommerce.dialogs.DeleteProductDialog;
 import com.ewikse.mycommerce.interfaces.DetailView;
 import com.ewikse.mycommerce.model.DetailProductPresenter;
 import com.ewikse.mycommerce.model.Item;
-import com.ewikse.mycommerce.model.Product;
+
+import java.util.List;
 
 import static com.ewikse.mycommerce.R.id.detail_collapsing_toolbar;
 import static com.ewikse.mycommerce.R.id.detail_product_code;
@@ -26,7 +28,7 @@ import static com.ewikse.mycommerce.R.id.detail_product_stock;
 import static com.ewikse.mycommerce.R.id.toolbar;
 import static com.ewikse.mycommerce.R.layout.activity_detail_product;
 import static com.ewikse.mycommerce.R.menu.menu_detail_product;
-import static com.ewikse.mycommerce.fragments.ProductFragment.RESULT_LIST_CHANGED;
+import static com.ewikse.mycommerce.fragments.ProductFragment.RESULT_ITEM_DELETED;
 
 public class DetailProductActivity extends AppCompatActivity implements DetailView {
 
@@ -34,12 +36,13 @@ public class DetailProductActivity extends AppCompatActivity implements DetailVi
     public static final String TO_DELETE = "TO_DELETE";
 
     private DeleteProductDialog deleteProductDialog;
-    private Intent intent;
+    private Intent toDeleteProduct;
     private DetailProductPresenter detailProductPresenter;
     private TextView description, stock, price, code;
     private ImageView imageView;
     private CollapsingToolbarLayout collapsingToolbar;
     private DeleteProductDialog.Answer answer;
+    private String codeProduct;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +56,8 @@ public class DetailProductActivity extends AppCompatActivity implements DetailVi
         initComponents();
 
         detailProductPresenter = new DetailProductPresenter();
-        detailProductPresenter.onCreate(this, getIntent().getStringExtra(CODE_KEY));
+        codeProduct = getIntent().getStringExtra(CODE_KEY);
+        detailProductPresenter.onCreate(this, codeProduct);
     }
 
     @Override
@@ -66,18 +70,18 @@ public class DetailProductActivity extends AppCompatActivity implements DetailVi
         if (deleteProductDialog == null) {
             deleteProductDialog = new DeleteProductDialog(this);
         }
-        deleteProductDialog.setCode(CODE_KEY);
+        deleteProductDialog.setCode(codeProduct);
         deleteProductDialog.show();
         deleteProductDialog.setDialogResult(getDialogResult());
     }
 
     @Override
-    public void closeDetailProduct(Product product) {
-        if (intent == null) {
-            intent = new Intent();
+    public void closeDetailProduct(Item item) {
+        if (toDeleteProduct == null) {
+            toDeleteProduct = new Intent();
         }
-        intent.putExtra(TO_DELETE, product);
-        setResult(RESULT_LIST_CHANGED, intent);
+        toDeleteProduct.putExtra(TO_DELETE, item);
+        setResult(RESULT_ITEM_DELETED, toDeleteProduct);
         finish();
     }
 
@@ -87,15 +91,14 @@ public class DetailProductActivity extends AppCompatActivity implements DetailVi
         return true;
     }
 
-
     @Override
-    public void fillPageWithProductData(Item item) {
-        collapsingToolbar.setTitle(item.getName());
-        description.setText(item.getDescription());
-        stock.setText(item.getStock());
-        price.setText(item.getPrice());
-        code.setText(item.getCode());
-        imageView.setImageBitmap(item.getIcon());
+    public void fillPageWithProductData(List<Object> data) {
+        collapsingToolbar.setTitle((String) data.get(0));
+        description.setText((String) data.get(1));
+        stock.setText((String) data.get(2));
+        price.setText((String) data.get(3));
+        code.setText((String) data.get(4));
+        imageView.setImageBitmap((Bitmap) data.get(5));
     }
 
     @NonNull
@@ -112,8 +115,7 @@ public class DetailProductActivity extends AppCompatActivity implements DetailVi
     }
 
     private void initComponents() {
-        collapsingToolbar = (CollapsingToolbarLayout)
-                findViewById(detail_collapsing_toolbar);
+        collapsingToolbar = (CollapsingToolbarLayout) findViewById(detail_collapsing_toolbar);
         description = (TextView) findViewById(detail_product_description);
         stock = (TextView) findViewById(detail_product_stock);
         price = (TextView) findViewById(detail_product_price);

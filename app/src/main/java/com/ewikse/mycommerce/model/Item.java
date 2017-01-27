@@ -3,7 +3,11 @@ package com.ewikse.mycommerce.model;
 import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 
-public class Item {
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+public class Item implements Serializable {
     private Product product;
     private Bitmap icon, detail;
 
@@ -18,10 +22,19 @@ public class Item {
         this.detail = detail;
     }
 
-    public Item(Product product) {
+    public Item(@NonNull Product product) {
         this.product = product;
-        this.icon = null;
-        this.detail = null;
+    }
+
+    public List<Object> toObjectList() {
+        List<Object> data = new ArrayList<>(6);
+        data.add(getName());
+        data.add(getDescription());
+        data.add(getStock());
+        data.add(getPrice());
+        data.add(getCode());
+        data.add(getIcon());
+        return data;
     }
 
     public String getName() {
@@ -55,5 +68,4 @@ public class Item {
     public Bitmap getDetail() {
         return detail;
     }
-
 }

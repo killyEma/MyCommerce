@@ -7,7 +7,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.ewikse.mycommerce.model.Product;
-import com.ewikse.mycommerce.utils.PhotoUtils;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -5,13 +5,16 @@ import android.content.Context;
 import com.ewikse.mycommerce.model.Item;
 import com.ewikse.mycommerce.model.Product;
 
+import java.io.Serializable;
+import java.util.List;
+
 public interface DetailView {
 
     void showDialogToRemoveThisProduct();
 
-    void closeDetailProduct(Product product);
+    void closeDetailProduct(Item product);
 
-    void fillPageWithProductData(Item item);
+    void fillPageWithProductData(List<Object> data);
 
     Context getApplicationContext();
 

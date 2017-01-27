@@ -22,11 +22,11 @@ import static com.ewikse.mycommerce.activities.DetailProductActivity.TO_DELETE;
 
 public class ProductFragment extends Fragment implements ProductView {
 
-    public static final int RESULT_LIST_CHANGED = 1;
+    public static final int RESULT_ITEM_DELETED = 1;
 
     private static ProductFragment fragment;
     private static ContentAdapter adapter;
-    private Intent intent;
+    private Intent toSeeDetailProduct;
     private ProductPresenter presenter;
     private RecyclerView recyclerView;
 
@@ -94,11 +94,11 @@ public class ProductFragment extends Fragment implements ProductView {
         return new ContentAdapter.OnProductClickListener() {
             @Override
             public void onItemClick(String productCode) {
-                if (intent == null) {
-                    intent = new Intent(getContext(), DetailProductActivity.class);
+                if (toSeeDetailProduct == null) {
+                    toSeeDetailProduct = new Intent(getContext(), DetailProductActivity.class);
                 }
-                intent.putExtra(CODE_KEY, productCode);
-                startActivityForResult(intent, RESULT_LIST_CHANGED);
+                toSeeDetailProduct.putExtra(CODE_KEY, productCode);
+                startActivityForResult(toSeeDetailProduct, RESULT_ITEM_DELETED);
             }
         };
     }

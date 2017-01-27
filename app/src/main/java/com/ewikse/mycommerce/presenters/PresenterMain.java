@@ -1,15 +1,13 @@
 package com.ewikse.mycommerce.presenters;
 
-import android.graphics.Bitmap;
-
 import com.ewikse.mycommerce.R;
 import com.ewikse.mycommerce.interfaces.IPresenterMain;
 import com.ewikse.mycommerce.interfaces.MainView;
-import com.ewikse.mycommerce.model.Item;
 import com.ewikse.mycommerce.model.Product;
 
+import static com.ewikse.mycommerce.activities.MainActivity.RESULT_ITEM_NEW;
+
 public class PresenterMain implements IPresenterMain {
-    public static final int RESULT_ITEM_NEW = 2;
     private final MainView mainView;
 
     public PresenterMain(MainView mainView) {
@@ -17,10 +15,9 @@ public class PresenterMain implements IPresenterMain {
     }
 
     @Override
-    public void onResult(int requestCode, int resultCode, Object oProduct, Object oImage) {
+    public void onResult(int requestCode, int resultCode, Object oProduct) {
         if (resultCode == RESULT_ITEM_NEW) {
-            notifyToTheListAProductWasAdded(requestCode, resultCode,
-                    new Item((Bitmap) oImage, (Product) oProduct));
+            notifyToTheListAProductWasAdded(requestCode, resultCode, (Product) oProduct);
         }
     }
 
@@ -32,10 +29,10 @@ public class PresenterMain implements IPresenterMain {
         }
     }
 
-    private void notifyToTheListAProductWasAdded(int requestCode, int resultCode, Item item) {
-        if (item != null) {
+    private void notifyToTheListAProductWasAdded(int requestCode, int resultCode, Product product) {
+        if (product != null) {
             mainView.getProductFragment().getPresenter()
-                    .onActivityResult(requestCode, resultCode, item);
+                    .onActivityResult(requestCode, resultCode, product);
         }
     }
 }
