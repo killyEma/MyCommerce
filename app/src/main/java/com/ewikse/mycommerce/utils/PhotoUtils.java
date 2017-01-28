@@ -6,17 +6,15 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.provider.MediaStore;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.WindowManager;
 
-import com.ewikse.mycommerce.activities.NewProductActivity;
-
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+
+import static android.provider.MediaStore.MediaColumns.DATA;
+import static com.ewikse.mycommerce.activities.NewProductActivity.SAVE_ACTION;
 
 public class PhotoUtils {
     private final static int PHOTO_SIZE_ICON = 48;
@@ -32,11 +30,13 @@ public class PhotoUtils {
     }
 
     public Bitmap reloadImageViewProduct(Uri selectedImage, int action) {
-        String[] filePathColumn = { MediaStore.Images.Media.DATA };
+        String[] filePathColumn = {DATA};
 
         Cursor cursor = contentResolver.query(selectedImage,
                 filePathColumn, null, null, null);
-        if (cursor != null) { cursor.close(); }
+        if (cursor != null) {
+            cursor.close();
+        }
 
         Bitmap bitmap = null;
         try {
@@ -54,7 +54,7 @@ public class PhotoUtils {
         options.inJustDecodeBounds = true;
         BitmapFactory.decodeStream(inputStream, null, options);
         int reqWidth, reqHeight;
-        if (action == NewProductActivity.SAVE_ACTION){
+        if (action == SAVE_ACTION) {
             DisplayMetrics metrics = new DisplayMetrics();
             windowManager.getDefaultDisplay().getMetrics(metrics);
             int height = metrics.heightPixels;

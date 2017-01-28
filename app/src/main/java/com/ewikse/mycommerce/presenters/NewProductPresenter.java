@@ -14,7 +14,7 @@ import static android.app.Activity.RESULT_OK;
 import static com.ewikse.mycommerce.R.id.cancel_new_product_btn;
 import static com.ewikse.mycommerce.R.id.image_new_product_iv;
 import static com.ewikse.mycommerce.R.id.new_product_btn;
-import static com.ewikse.mycommerce.activities.NewProductActivity.RESULT_LOAD_IMAGE;
+import static com.ewikse.mycommerce.interfaces.ResultCodes.RESULT_LOAD_IMAGE;
 
 public class NewProductPresenter implements INewProductPresenter {
     private NewProductView newProductView;

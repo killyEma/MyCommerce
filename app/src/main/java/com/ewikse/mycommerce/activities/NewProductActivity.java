@@ -27,8 +27,9 @@ import static com.ewikse.mycommerce.R.id.new_product_btn;
 import static com.ewikse.mycommerce.R.id.price_new_product_et;
 import static com.ewikse.mycommerce.R.id.stock_new_product_et;
 import static com.ewikse.mycommerce.R.layout.activity_new_product;
-import static com.ewikse.mycommerce.activities.MainActivity.RESULT_ITEM_NEW;
 import static com.ewikse.mycommerce.backgroundservices.EmailService.CODE_PRODUCT;
+import static com.ewikse.mycommerce.interfaces.ResultCodes.RESULT_ITEM_NEW;
+import static com.ewikse.mycommerce.interfaces.ResultCodes.RESULT_LOAD_IMAGE;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 import java.io.IOException;
@@ -40,7 +41,7 @@ public class NewProductActivity extends AppCompatActivity implements View.OnClic
     private static final String TITLE_NEW_PRODUCT_CHOOSER = "Imagen de nuevo Producto";
     private static final String TYPE_IMAGE = "image/*";
     public static final String TO_ADD_ITEM = "TO_ADD_ITEM";
-    public static final int RESULT_LOAD_IMAGE = 1;
+
     public static final int SHOW_ACTION = 2;
     public static final int SAVE_ACTION = 1;
 
@@ -114,14 +115,12 @@ public class NewProductActivity extends AppCompatActivity implements View.OnClic
 
     @Override
     public List<Bitmap> retrieveProductImages() {
-        List<Bitmap> images = null;
         if (uri != null && inputsAreValid()) {
+            List<Bitmap> images = new ArrayList<>(2);
             Bitmap icon, detail;
             try {
-                icon = imageBitmap == null ?
-                        photoUtils.getBitmapFromUri(uri, SHOW_ACTION) : imageBitmap;
+                icon = getImageIcon();
                 detail = photoUtils.getBitmapFromUri(uri, SAVE_ACTION);
-                images = new ArrayList<>(2);
                 images.add(icon);
                 images.add(detail);
             } catch (IOException e) {
@@ -136,6 +135,21 @@ public class NewProductActivity extends AppCompatActivity implements View.OnClic
     public void loadImage() {
         imageBitmap = photoUtils.reloadImageViewProduct(uri, SHOW_ACTION);
         image.setImageBitmap(imageBitmap);
+    }
+
+    @Override
+    public void setResultAction(Serializable oProduct) {
+        if (itemToAdd == null) {
+            itemToAdd = new Intent();
+        }
+        itemToAdd.putExtra(TO_ADD_ITEM, oProduct);
+        setResult(RESULT_ITEM_NEW, itemToAdd);
+    }
+
+    private Bitmap getImageIcon() throws IOException {
+        return imageBitmap == null ?
+                photoUtils.getBitmapFromUri(uri, SHOW_ACTION) :
+                imageBitmap;
     }
 
     private boolean inputsAreValid() {
@@ -160,15 +174,6 @@ public class NewProductActivity extends AppCompatActivity implements View.OnClic
         cancel.setOnClickListener(this);
         create.setOnClickListener(this);
         image.setOnClickListener(this);
-    }
-
-    @Override
-    public void setResultAction(Serializable oProduct) {
-        if (itemToAdd == null) {
-            itemToAdd = new Intent();
-        }
-        itemToAdd.putExtra(TO_ADD_ITEM, oProduct);
-        setResult(RESULT_ITEM_NEW, itemToAdd);
     }
 
 }

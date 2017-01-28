@@ -14,6 +14,7 @@ import static com.ewikse.mycommerce.R.id.commerce_vp;
 import static com.ewikse.mycommerce.R.layout.activity_main;
 import static com.ewikse.mycommerce.R.menu.menu_main;
 import static com.ewikse.mycommerce.activities.NewProductActivity.TO_ADD_ITEM;
+import static com.ewikse.mycommerce.interfaces.ResultCodes.RESULT_ITEM_NEW;
 
 import com.ewikse.mycommerce.adapters.MainActivityPagerAdapter;
 import com.ewikse.mycommerce.fragments.ProductFragment;
@@ -21,7 +22,6 @@ import com.ewikse.mycommerce.interfaces.MainView;
 import com.ewikse.mycommerce.presenters.PresenterMain;
 
 public class MainActivity extends AppCompatActivity implements MainView {
-    public static final int RESULT_ITEM_NEW = 2;
 
     private MainActivityPagerAdapter mainActivityPagerAdapter;
     private ProductFragment productFragment;

@@ -5,7 +5,7 @@ import com.ewikse.mycommerce.interfaces.IPresenterMain;
 import com.ewikse.mycommerce.interfaces.MainView;
 import com.ewikse.mycommerce.model.Product;
 
-import static com.ewikse.mycommerce.activities.MainActivity.RESULT_ITEM_NEW;
+import static com.ewikse.mycommerce.interfaces.ResultCodes.RESULT_ITEM_NEW;
 
 public class PresenterMain implements IPresenterMain {
     private final MainView mainView;

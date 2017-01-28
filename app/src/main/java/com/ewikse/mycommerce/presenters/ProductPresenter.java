@@ -11,8 +11,8 @@ import com.ewikse.mycommerce.services.ProductServiceImpl;
 
 import java.util.List;
 
-import static com.ewikse.mycommerce.activities.MainActivity.RESULT_ITEM_NEW;
 import static com.ewikse.mycommerce.fragments.ProductFragment.RESULT_ITEM_DELETED;
+import static com.ewikse.mycommerce.interfaces.ResultCodes.RESULT_ITEM_NEW;
 
 public class ProductPresenter implements IProductPresenter {
 
