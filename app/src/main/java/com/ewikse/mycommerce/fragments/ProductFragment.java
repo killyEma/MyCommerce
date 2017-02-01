@@ -53,7 +53,7 @@ public class ProductFragment extends Fragment implements ProductView {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == 0) { return; }
         Object oProduct = data.getExtras().get(TO_DELETE);
-        presenter.onActivityResult(requestCode, resultCode, oProduct);
+        presenter.onResult(requestCode, resultCode, oProduct);
     }
 
     @Override

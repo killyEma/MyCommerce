@@ -32,7 +32,7 @@ public class PresenterMain implements IPresenterMain {
     private void notifyToTheListAProductWasAdded(int requestCode, int resultCode, Product product) {
         if (product != null) {
             mainView.getProductFragment().getPresenter()
-                    .onActivityResult(requestCode, resultCode, product);
+                    .onResult(requestCode, resultCode, product);
         }
     }
 }

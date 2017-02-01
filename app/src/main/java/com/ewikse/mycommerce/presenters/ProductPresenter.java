@@ -33,7 +33,7 @@ public class ProductPresenter implements IProductPresenter {
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Object data) {
+    public void onResult(int requestCode, int resultCode, Object data) {
         switch (resultCode) {
             case RESULT_ITEM_DELETED:
                 deleteItem((Item) data); break;
@@ -60,7 +60,8 @@ public class ProductPresenter implements IProductPresenter {
         //TODO: this should be in asyncTask
         products = productService.getProducts();
         picturesIcon = productService.retrievePicturesForProducts(products);
-        productView.setAdapterWithData(new ContentAdapter(products, picturesIcon, productView.getOnProductClickListener()));
+        productView.setAdapterWithData(
+                new ContentAdapter(products, picturesIcon, productView.getOnProductClickListener()));
         productView.setRecyclerView();
         return products;
     }

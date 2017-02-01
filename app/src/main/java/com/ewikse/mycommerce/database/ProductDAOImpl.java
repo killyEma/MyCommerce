@@ -11,7 +11,7 @@ import com.ewikse.mycommerce.model.Product;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProductDAOImpl extends DbContentProvider implements ProductDAO, IProductSchema{
+public class ProductDAOImpl extends DbContentProvider implements ProductDAO, IProductSchema {
 
     private static final String DATABASE = "DATABASE";
 
@@ -20,12 +20,12 @@ public class ProductDAOImpl extends DbContentProvider implements ProductDAO, IPr
     @Override
     protected Product cursorToEntity(Cursor cursor) {
         return new Product(cursor.getString(0),
-                                        cursor.getString(1),
-                                        cursor.getString(2),
-                                        cursor.getInt(3),
-                                        cursor.getString(4),
-                                        cursor.getString(5),
-                                        cursor.getString(6));
+                cursor.getString(1),
+                cursor.getString(2),
+                cursor.getInt(3),
+                cursor.getString(4),
+                cursor.getString(5),
+                cursor.getString(6));
     }
 
     public ProductDAOImpl(SQLiteDatabase mDb) {
@@ -45,16 +45,16 @@ public class ProductDAOImpl extends DbContentProvider implements ProductDAO, IPr
 
     @Override
     public Product getProductByCode(String code) {
-        Cursor cursor = super.rawQuery(SINGLE_PRODUCT_QUERY, new String[] {code});
+        Cursor cursor = super.rawQuery(SINGLE_PRODUCT_QUERY, new String[]{code});
         cursor.moveToNext();
         return cursorToEntity(cursor);
     }
 
     @Override
-    public String getPictureProductByCode(String code) {
-        Cursor cursor = super.rawQuery(SINGLE_PICTURE_NAME_PRODUCT_QUERY, new String[] {code});
+    public String[] getPicturesProductByCode(String code) {
+        Cursor cursor = super.rawQuery(PICTURES_NAME_PRODUCT_QUERY, new String[]{code});
         cursor.moveToNext();
-        return cursor.getString(0);
+        return new String[]{cursor.getString(0), cursor.getString(1)};
     }
 
     @Override
@@ -71,7 +71,7 @@ public class ProductDAOImpl extends DbContentProvider implements ProductDAO, IPr
     }
 
     private void setContentValues(Product product) {
-        contentValues  = new ContentValues();
+        contentValues = new ContentValues();
         contentValues.put(CL_PRODUCTS_CODE, product.getCode());
         contentValues.put(CL_PRODUCTS_DESCRIPTION, product.getDescription());
         contentValues.put(CL_PRODUCTS_IMAGE_ICON, product.getPictureIcon());
@@ -84,7 +84,7 @@ public class ProductDAOImpl extends DbContentProvider implements ProductDAO, IPr
 
     @Override
     public void deleteProduct(String code) {
-        super.delete(TABLE_PRODUCTS, CL_PRODUCTS_CODE + "=?" , new String[]{code});
+        super.delete(TABLE_PRODUCTS, CL_PRODUCTS_CODE + "=?", new String[]{code});
     }
 
     @Override

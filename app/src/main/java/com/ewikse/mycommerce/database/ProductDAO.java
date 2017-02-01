@@ -13,5 +13,5 @@ public interface ProductDAO {
 
     Product getProductByCode(String code);
 
-    String getPictureProductByCode(String code);
+    String [] getPicturesProductByCode(String code);
 }
